@@ -1,8 +1,24 @@
 <html>
 
 <head>
-
+    <script type="text/javascript" src="https://d3js.org/d3.v2.min.js?2.9.3"></script>
 </head>
+<style>
+    .link {
+        stroke: #aaa;
+    }
+
+    .node text {
+        stroke: #333;
+        cursos: pointer;
+    }
+
+    .node circle {
+        stroke: #fff;
+        stroke-width: 3px;
+        fill: #555;
+    }
+</style>
 
 <body>
     <script>
@@ -73,6 +89,102 @@
             ["95", "101"],
             ["100", "103"],
             ["95", "103"]]
+
+        var data2 = {
+            "nodes": [
+                // { "name": "node1", "group": 1 },
+                // { "name": "node2", "group": 2 },
+                // { "name": "node3", "group": 2 },
+                // { "name": "node4", "group": 3 }
+            ],
+            "links": [
+                // { "source": 2, "target": 1, "weight": 1 },
+                // { "source": 0, "target": 2, "weight": 3 }
+            ]
+        }
+        list_node = [];
+        data.forEach(element => {
+            if (list_node.indexOf(element[0]) < 0) {
+                list_node.push(element[0])
+            }
+            if (list_node.indexOf(element[1]) < 0) {
+                list_node.push(element[1])
+            }
+        });
+
+        console.log(list_node)
+
+        list_node.forEach(element => {
+            data2.nodes.push({ "name": element })
+        });
+        data.forEach((element) => {
+            data2.links.push({ "source": list_node.indexOf(element[0]), "target": list_node.indexOf(element[1]) })
+        });
+
+        // console.log(data2)
+
+        var width = 1500,
+            height = 1000
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        var force = d3.layout.force()
+            .gravity(.05)
+            .distance(100)
+            .charge(-100)
+            .size([width, height]);
+
+        force
+            .nodes(data2.nodes)
+            .links(data2.links)
+            .start();
+
+        svg.append("svg:defs")
+            .append("svg:marker")    // This section adds in the arrows
+            .attr("id", "arrowhead")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 25)
+            .attr("refY", 0)
+            .attr('orient','auto')
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .append("svg:path")
+            .attr("d", "M0,-5L10,0L0,5");
+
+        var link = svg.selectAll(".link")
+            .data(data2.links)
+            .enter().append("line")
+            .attr("class", "link")
+            .style("stroke-width", function (d) { return Math.sqrt(d.weight); })
+            .attr("marker-end", "url(#arrowhead)");
+
+        var node = svg.selectAll(".node")
+            .data(data2.nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .call(force.drag);
+
+
+
+        node.append("circle")
+            .attr("r", "5");
+
+        node.append("text")
+            .attr("dx", 12)
+            .attr("dy", ".35em")
+            .text(function (d) { return d.name });
+
+        force.on("tick", function () {
+            link.attr("x1", function (d) { return d.source.x; })
+                .attr("y1", function (d) { return d.source.y; })
+                .attr("x2", function (d) { return d.target.x; })
+                .attr("y2", function (d) { return d.target.y; });
+
+            node.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+        });
     </script>
 </body>
 
