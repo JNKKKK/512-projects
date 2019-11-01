@@ -22,6 +22,7 @@
 
 <body>
     <script>
+        // input data
         data =
             [["5", "6"],
             ["6", "7"],
@@ -100,9 +101,13 @@
             "links": [
                 // { "source": 2, "target": 1, "weight": 1 },
                 // { "source": 0, "target": 2, "weight": 3 }
-            ]
+            ],
         }
-        list_node = [];
+
+        //extract nodes
+        var list_node = [];
+
+
         data.forEach(element => {
             if (list_node.indexOf(element[0]) < 0) {
                 list_node.push(element[0])
@@ -112,17 +117,88 @@
             }
         });
 
-        console.log(list_node)
+        var graph = {
+            nodes: list_node,
+            adjacency_list: {},
+            time: 0,
+            count: 0,
+            BiconnectedComponents:{},
+            SCC: function (u_idx, parent, low, disc, st) {
+                var children = 0
+                disc[u_idx] = this.time
+                low[u_idx] = this.time
+                this.time += 1
+                u = this.nodes[u_idx]
+                console.log(this.adjacency_list)
+                this.adjacency_list[u].forEach(v => {
+                    if (disc[v] == -1) {
+                        parent[v] = u
+                        children += 1
+                        st.push([u, v])
+                        this.SCC(v, parent, low, disc, st)
+                        low[u] = Math.min(low[u], low[v])
+                        if (parent[u] == -1 && children > 1 || parent[u] != -1 && low[v] >= disc[u]) {
+                            this.BiconnectedComponents[u] = []
+                            this.count += 1
+                            w = -1
+                            while (w != [u,v]) {
+                                w = st.pop()
+                                this.BiconnectedComponents[u].push(w)
+                                // console.log(String(w[0]) + "--" + String(w[1]) + " ")
+                                break
+                            }
+                        }
+                    }
+                    else if (v != parent[u] && low[u] > disc[v]) {
+                        low[u] = Math.min(low[u], disc[v])
+                        st.push([u, v])
+                    }
+                })
+            },
+            BBC: function () {
+                var init_list = Array(this.nodes.length)
+                for (i = 0; i < this.nodes.length; i++) {
+                    init_list[i] = -1
+                }
+                disc = init_list
+                low = init_list
+                parent = init_list
+                st = []
+                this.nodes.forEach((element, i) => {
+                    if (disc[i] == -1) {
+                        this.SCC(i, parent, low, disc, st)
+                        if (st) {
+                            this.BiconnectedComponents[this.nodes[i]] = []
+                            this.count += 1
+                            while (st) {
+                                w = st.pop()
+                                this.BiconnectedComponents[this.nodes[i]].push(w)
+                                // console.log(String(w[0]) + "--" + String(w[1]) + " ")
+                                break
+                            }
+                        }
+                    }
+                })
+            }
+        }
 
         list_node.forEach(element => {
             data2.nodes.push({ "name": element })
+            graph.adjacency_list[element] = []
         });
+
+        data.forEach(element => {
+            graph.adjacency_list[element[0]].push(element[1])
+            graph.adjacency_list[element[1]].push(element[0])
+        })
+
         data.forEach((element) => {
             data2.links.push({ "source": list_node.indexOf(element[0]), "target": list_node.indexOf(element[1]) })
         });
 
-        // console.log(data2)
-
+        graph.BBC()
+        // console.log(graph.BiconnectedComponents)
+        // draw graph
         var width = 1500,
             height = 1000
 
@@ -147,7 +223,7 @@
             .attr("viewBox", "0 -5 10 10")
             .attr("refX", 25)
             .attr("refY", 0)
-            .attr('orient','auto')
+            .attr('orient', 'auto')
             .attr("markerWidth", 6)
             .attr("markerHeight", 6)
             .attr("orient", "auto")
@@ -159,7 +235,7 @@
             .enter().append("line")
             .attr("class", "link")
             .style("stroke-width", function (d) { return Math.sqrt(d.weight); })
-            .attr("marker-end", "url(#arrowhead)");
+        // .attr("marker-end", "url(#arrowhead)"); //show arrows
 
         var node = svg.selectAll(".node")
             .data(data2.nodes)
