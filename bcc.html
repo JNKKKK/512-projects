@@ -1,0 +1,357 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="https://d3js.org/d3.v2.min.js?2.9.3"></script>
+</head>
+<style>
+    .link {
+        stroke: #aaa;
+    }
+
+    .node text {
+        stroke: #333;
+        cursos: pointer;
+    }
+
+    .node circle {
+        stroke: #fff;
+        stroke-width: 3px;
+        fill: #555;
+    }
+</style>
+
+<body>
+    <script>
+        // input data
+        data =
+            [["5", "6"],
+            ["6", "7"],
+            ["3", "3"],
+            ["4", "6"],
+            ["4", "11"],
+            ["6", "8"],
+            ["4", "18"],
+            ["11", "18"],
+            ["12", "18"],
+            ["20", "24"],
+            ["3", "24"],
+            ["17", "24"],
+            ["28", "38"],
+            ["14", "38"],
+            ["17", "38"],
+            ["18", "47"],
+            ["20", "47"],
+            ["8", "11"],
+            ["38", "29"],
+            ["18", "29"],
+            ["20", "29"],
+            ["11", "46"],
+            ["5", "8"],
+            ["7", "38"],
+            ["46", "39"],
+            ["7", "47"],
+            ["46", "48"],
+            ["48", "49"],
+            ["46", "49"],
+            ["7", "49"],
+            ["14", "42"],
+            ["49", "53"],
+            ["11", "53"],
+            ["7", "57"],
+            ["20", "57"],
+            ["7", "58"],
+            ["20", "58"],
+            ["4", "58"],
+            ["71", "72"],
+            ["66", "71"],
+            ["66", "72"],
+            ["70", "71"],
+            ["70", "72"],
+            ["74", "76"],
+            ["67", "74"],
+            ["24", "81"],
+            ["83", "76"],
+            ["66", "95"],
+            ["66", "100"],
+            ["70", "83"],
+            ["66", "95"],
+            ["83", "95"],
+            ["48", "84"],
+            ["48", "83"],
+            ["24", "90"],
+            ["67", "90"],
+            ["29", "90"],
+            ["60", "88"],
+            ["60", "92"],
+            ["76", "88"],
+            ["76", "92"],
+            ["95", "100"],
+            ["100", "101"],
+            ["95", "101"],
+            ["100", "103"],
+            ["95", "103"]]
+
+        var data2 = {
+            "nodes": [
+                // { "name": "node1", "group": 1 },
+                // { "name": "node2", "group": 2 },
+                // { "name": "node3", "group": 2 },
+                // { "name": "node4", "group": 3 }
+            ],
+            "links": [
+                // { "source": 2, "target": 1, "weight": 1 },
+                // { "source": 0, "target": 2, "weight": 3 }
+            ],
+        }
+
+        //extract nodes
+        var list_node = [];
+
+
+        data.forEach(element => {
+            if (list_node.indexOf(element[0]) < 0) {
+                list_node.push(element[0])
+            }
+            if (list_node.indexOf(element[1]) < 0) {
+                list_node.push(element[1])
+            }
+        });
+
+        function checkAvailability(arr, val) {
+            return arr.some(function (arrVal) {
+                return val[0] == arrVal[0] && val[1] == arrVal[1];
+            });
+        }
+
+        list_node.forEach(element => {
+            data2.nodes.push({ "name": element })
+        });
+
+        data.forEach((element) => {
+            data2.links.push({ "source": list_node.indexOf(element[0]), "target": list_node.indexOf(element[1]) })
+        });
+
+
+        //bcc
+        function create_array(length) {
+            let array = [];
+            for (let i = 0; i < length; ++i) {
+                array.push([]);
+            }
+            return array;
+        }
+
+
+        class Edge {
+            constructor(u, v) {
+                this.u = u;
+                this.v = v;
+            }
+        }
+
+        class Graph {
+
+            constructor(v) {
+                this.count = 0; // count is number of biconnected components
+                this.subgraphs = []; //biconnected components
+                this.time = 0;  // time is used to find discovery times
+
+                this.V = v;     // No. of vertices
+                this.E = 0;     // No. of Edges
+                this.adj = [];  // Adjacency List
+
+                this.adj = create_array(v);
+            }
+
+            //Function to add an edge into the graph
+            addEdge(v, w) {
+                this.adj[v].push(w);
+                this.E++;
+            }
+
+            _BCCUtil(u, disc, low, st, parent) {
+                // Initialize discovery time and low value
+                disc[u] = low[u] = ++this.time;
+                this.children = 0;
+
+                // Go through all vertices adjacent to this
+                // v is current adjacent of 'u'
+                this.adj[u].forEach(v => {
+
+                    // If v is not visited yet, then recur for it
+                    if (disc[v] == -1) {
+                        this.children++;
+                        parent[v] = u;
+
+                        // store the edge in stack
+                        st.push(new Edge(u, v));
+                        this._BCCUtil(v, disc, low, st, parent);
+
+                        // Check if the subtree rooted with 'v' has a
+                        // connection to one of the ancestors of 'u'
+                        // Case 1 -- per Strongly Connected Components Article
+                        if (low[u] > low[v])
+                            low[u] = low[v];
+
+                        // If u is an articulation point,
+                        // pop all edges from stack till u -- v
+                        if ((disc[u] == 1 && this.children > 1) || (disc[u] > 1 && low[v] >= disc[u])) {
+                            let subgraph = [];
+                            while (st[st.length - 1].u != u || st[st.length - 1].v != v) {
+                                subgraph.push(st[st.length - 1]);
+                                st.splice(st.length - 1, 1);
+                            }
+
+                            subgraph.push(st[st.length - 1]);
+                            this.subgraphs.push(subgraph);
+                            subgraph = [];
+                            st.splice(st.length - 1, 1);
+
+                            this.count++;
+                        }
+                    }
+
+                    // Update low value of 'u' only of 'v' is still in stack
+                    // Case 2 -- per Strongly Connected Components Article
+                    else if (v != parent[u] && disc[v] < low[u]) {
+                        if (low[u] > disc[v])
+                            low[u] = disc[v];
+                        st.push(new Edge(u, v));
+                    }
+                })
+            }
+
+            BCC() {
+                let V = this.V;
+                let disc = create_array(V);
+                let low = create_array(V);
+                let parent = create_array(V);
+                let st = [];
+
+                // Initialize disc and low, and parent arrays
+                for (let i = 0; i < V; i++) {
+                    disc[i] = -1;
+                    low[i] = -1;
+                    parent[i] = -1;
+                }
+
+                for (let i = 0; i < V; i++) {
+                    if (disc[i] == -1)
+                        this._BCCUtil(i, disc, low, st, parent);
+
+                    let j = 0;
+
+                    // If stack is not empty, pop all edges from stack
+                    let subgraph = [];
+                    while (st.length > 0) {
+                        j = 1;
+                        subgraph.push(st[st.length - 1]);
+                        st.splice(st.length - 1, 1);
+                    }
+
+                    if (j == 1) {
+                        this.subgraphs.push(subgraph);
+                        subgraph = [];
+                        this.count++;
+                    }
+                }
+            }
+        }
+
+        //generate BBCs
+        let g = new Graph(43)
+        data.forEach(element => {
+            // console.log(list_node.indexOf(element[0]),list_node.indexOf(element[1]))
+            if (element[0] != element[1]) {
+                g.addEdge(list_node.indexOf(element[0]), list_node.indexOf(element[1]))
+                g.addEdge(list_node.indexOf(element[1]), list_node.indexOf(element[0]))
+            }
+
+        })
+        g.BCC()
+        console.log(g.count)
+        console.log(g.subgraphs)
+
+        // console.log(g.subgraphs[1][0].u)
+
+        var BCCs = []
+        g.subgraphs.forEach(element => {
+            var tmp = []
+            element.forEach(vertex => {
+                if(tmp.indexOf(list_node[vertex.u]) == -1){
+                    tmp.push(list_node[vertex.u])
+                }
+                if(tmp.indexOf(list_node[vertex.v]) == -1){
+                    tmp.push(list_node[vertex.v])
+                }
+            })
+            BCCs.push(tmp)
+        })
+        console.log(BCCs)
+
+        //draw graph
+        var width = 1500,
+            height = 1000
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        var force = d3.layout.force()
+            .gravity(.05)
+            .distance(100)
+            .charge(-100)
+            .size([width, height]);
+
+        force
+            .nodes(data2.nodes)
+            .links(data2.links)
+            .start();
+
+        svg.append("svg:defs")
+            .append("svg:marker")    // This section adds in the arrows
+            .attr("id", "arrowhead")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 25)
+            .attr("refY", 0)
+            .attr('orient', 'auto')
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .append("svg:path")
+            .attr("d", "M0,-5L10,0L0,5");
+
+        var link = svg.selectAll(".link")
+            .data(data2.links)
+            .enter().append("line")
+            .attr("class", "link")
+            .style("stroke-width", function (d) { return Math.sqrt(d.weight); })
+        // .attr("marker-end", "url(#arrowhead)"); //show arrows
+
+        var node = svg.selectAll(".node")
+            .data(data2.nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .call(force.drag);
+
+
+        node.append("circle")
+            .attr("r", "5");
+
+        node.append("text")
+            .attr("dx", 12)
+            .attr("dy", ".35em")
+            .text(function (d) { return d.name });
+
+        force.on("tick", function () {
+            link.attr("x1", function (d) { return d.source.x; })
+                .attr("y1", function (d) { return d.source.y; })
+                .attr("x2", function (d) { return d.target.x; })
+                .attr("y2", function (d) { return d.target.y; });
+
+            node.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+        });
+    </script>
+</body>
+
+</html>

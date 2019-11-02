@@ -91,6 +91,8 @@
             ["100", "103"],
             ["95", "103"]]
 
+
+
         var data2 = {
             "nodes": [
                 // { "name": "node1", "group": 1 },
@@ -116,42 +118,68 @@
                 list_node.push(element[1])
             }
         });
-
+        function checkAvailability(arr, val) {
+            return arr.some(function (arrVal) {
+                return val[0] == arrVal[0] && val[1] == arrVal[1];
+            });
+        }
+        // console.log(checkAvailability(data, ["95", "101"]))
         var graph = {
             nodes: list_node,
             adjacency_list: {},
             time: 0,
             count: 0,
-            BiconnectedComponents:{},
+            BiconnectedComponents: [],
             SCC: function (u_idx, parent, low, disc, st) {
                 var children = 0
                 disc[u_idx] = this.time
                 low[u_idx] = this.time
                 this.time += 1
                 u = this.nodes[u_idx]
-                console.log(this.adjacency_list)
                 this.adjacency_list[u].forEach(v => {
-                    if (disc[v] == -1) {
-                        parent[v] = u
+                    var v_idx = this.nodes.indexOf(v)
+                    if (disc[v_idx] == -1) {
+                        parent[v_idx] = u
                         children += 1
-                        st.push([u, v])
-                        this.SCC(v, parent, low, disc, st)
-                        low[u] = Math.min(low[u], low[v])
-                        if (parent[u] == -1 && children > 1 || parent[u] != -1 && low[v] >= disc[u]) {
-                            this.BiconnectedComponents[u] = []
+                        if (checkAvailability(data, [u, v])) {
+                            st.push([u, v])
+                        }
+                        else {
+                            st.push([v, u])
+                        }
+                        this.SCC(v_idx, parent, low, disc, st)
+                        low[u_idx] = Math.min(low[u_idx], low[v_idx])
+                        if ((disc[u_idx] == 1 && children > 1) || (disc[u_idx] > 1 && low[v_idx] >= disc[u_idx])) {
+                            component = []
                             this.count += 1
-                            w = -1
-                            while (w != [u,v]) {
-                                w = st.pop()
-                                this.BiconnectedComponents[u].push(w)
+                            w = ["0", "0"]
+                            while ((w[0] != u || w[1] != v) && (w[1] != u || w[0] != v)) {
+                                // console.log([u, v])
+                                // st.forEach(element => {
+                                //     console.log(element)
+                                // })
+                                // console.log("---------------")
+
+                                if (st.length == 0) {
+                                    break
+                                }
+                                else {
+                                    w = st.pop()
+                                    component.push(w)
+                                }
                                 // console.log(String(w[0]) + "--" + String(w[1]) + " ")
-                                break
                             }
+                            this.BiconnectedComponents.push(component)
                         }
                     }
-                    else if (v != parent[u] && low[u] > disc[v]) {
-                        low[u] = Math.min(low[u], disc[v])
-                        st.push([u, v])
+                    else if (v != parent[u_idx] && low[u_idx] > disc[v_idx]) {
+                        low[u_idx] = Math.min(low[u_idx], disc[v_idx])
+                        if (checkAvailability(data, [u, v])) {
+                            st.push([u, v])
+                        }
+                        else {
+                            st.push([v, u])
+                        }
                     }
                 })
             },
@@ -168,14 +196,14 @@
                     if (disc[i] == -1) {
                         this.SCC(i, parent, low, disc, st)
                         if (st) {
-                            this.BiconnectedComponents[this.nodes[i]] = []
+                            component = []
                             this.count += 1
-                            while (st) {
+                            for (j = 0; j < st.length; j++) {
                                 w = st.pop()
-                                this.BiconnectedComponents[this.nodes[i]].push(w)
+                                component.push(w)
                                 // console.log(String(w[0]) + "--" + String(w[1]) + " ")
-                                break
                             }
+                            this.BiconnectedComponents.push(component)
                         }
                     }
                 })
@@ -188,16 +216,21 @@
         });
 
         data.forEach(element => {
-            graph.adjacency_list[element[0]].push(element[1])
-            graph.adjacency_list[element[1]].push(element[0])
+            if (element[0] != element[1]) {
+                graph.adjacency_list[element[0]].push(element[1])
+                graph.adjacency_list[element[1]].push(element[0])
+            }
         })
 
         data.forEach((element) => {
             data2.links.push({ "source": list_node.indexOf(element[0]), "target": list_node.indexOf(element[1]) })
         });
 
-        graph.BBC()
+        // graph.BBC()
         // console.log(graph.BiconnectedComponents)
+        // console.log(graph.adjacency_list)
+        // console.log(graph.nodes)
+
         // draw graph
         var width = 1500,
             height = 1000
