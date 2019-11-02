@@ -2,7 +2,8 @@
 <meta charset="utf-8">
 
 <head>
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <title>Force Directed Graph</title>
 </head>
@@ -11,9 +12,11 @@
     <div>
         <input type='file' id="browseFile">
     </div>
-    <svg width="960" height="600"></svg>
+    <svg width="1500" height="1500"></svg>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
+        var bccs = JSON.parse('[["38","28"],["14","42"],["38","14"],["46","39"],["48","84"],["92","76","60","88"],["103","95","100","101","66","83","71","72","70"],["18","12"],["24","3"],["24","81"],["57","7","20","58","4","29","38","90","24","67","74","76","83","48","53","11","49","46","8","5","6","18","47","17"]]')
+        var colors = ['#FF5E33', '#FFC433', '#D4FF33', '#6EFF33', '#33FFC4', '#334CFF', '#8033FF', '#E633FF', '#FF33B2', '#FF334C', '#FF8033']
         class Graph {
 
             constructor() {
@@ -104,6 +107,18 @@
                     }
                 })
 
+                gr.nodes_data.forEach(node => {
+                    node['bcc_in'] = []
+                })
+
+                gr.nodes_data.forEach(node => {
+                    bccs.forEach((bcc, i) => {
+                        if (bcc.includes(node.name)) {
+                            node['bcc_in'].push(i)
+                        }
+                    })
+                })
+
                 var nodes_data = gr.nodes_data;
                 //Create links data
                 var links_data = gr.links_data;
@@ -135,22 +150,6 @@
                 var g = svg.append("g")
                     .attr("class", "everything");
 
-                svg.append('defs').append('marker')
-                    .attrs({
-                        'id': 'arrowhead',
-                        'viewBox': '-0 -5 10 10',
-                        'refX': 13,
-                        'refY': 0,
-                        'orient': 'auto',
-                        'markerWidth': 13,
-                        'markerHeight': 13,
-                        'xoverflow': 'visible'
-                    })
-                    .append('svg:path')
-                    .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-                    .attr('fill', '#999')
-                    .style('stroke', 'none');
-
                 //draw lines for the links
                 var link = g.append("g")
                     .attr("class", "links")
@@ -168,6 +167,20 @@
 
                 var circles = node.append("circle")
                     .attr("r", radius)
+                    .style("fill", (d) => {
+                        if (d.bcc_in.length==1){
+                            return colors[d.bcc_in[0]]
+                        } else {
+                            return "black"
+                        }
+                    })
+                    .style("box-shadow", (d)=>{
+                        if (d.bcc_in.length==1){
+                            return "none"
+                        } else {
+                            return "0 0 0 10px hsl(0, 0%, 80%)"
+                        }
+                    })
 
                 var labels = node.append("text")
                     .text(function (d) {

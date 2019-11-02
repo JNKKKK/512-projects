@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <script type="text/javascript" src="https://d3js.org/d3.v2.min.js?2.9.3"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <style>
     .link {
@@ -10,7 +10,7 @@
 
     .node text {
         stroke: #333;
-        cursos: pointer;
+        cursor: pointer;
     }
 
     .node circle {
@@ -24,89 +24,15 @@
     <script>
         // input data
         data =
-            [["5", "6"],
-            ["6", "7"],
-            ["3", "3"],
-            ["4", "6"],
-            ["4", "11"],
-            ["6", "8"],
-            ["4", "18"],
-            ["11", "18"],
-            ["12", "18"],
-            ["20", "24"],
-            ["3", "24"],
-            ["17", "24"],
-            ["28", "38"],
-            ["14", "38"],
-            ["17", "38"],
-            ["18", "47"],
-            ["20", "47"],
-            ["8", "11"],
-            ["38", "29"],
-            ["18", "29"],
-            ["20", "29"],
-            ["11", "46"],
-            ["5", "8"],
-            ["7", "38"],
-            ["46", "39"],
-            ["7", "47"],
-            ["46", "48"],
-            ["48", "49"],
-            ["46", "49"],
-            ["7", "49"],
-            ["14", "42"],
-            ["49", "53"],
-            ["11", "53"],
-            ["7", "57"],
-            ["20", "57"],
-            ["7", "58"],
-            ["20", "58"],
-            ["4", "58"],
-            ["71", "72"],
-            ["66", "71"],
-            ["66", "72"],
-            ["70", "71"],
-            ["70", "72"],
-            ["74", "76"],
-            ["67", "74"],
-            ["24", "81"],
-            ["83", "76"],
-            ["66", "95"],
-            ["66", "100"],
-            ["70", "83"],
-            ["66", "95"],
-            ["83", "95"],
-            ["48", "84"],
-            ["48", "83"],
-            ["24", "90"],
-            ["67", "90"],
-            ["29", "90"],
-            ["60", "88"],
-            ["60", "92"],
-            ["76", "88"],
-            ["76", "92"],
-            ["95", "100"],
-            ["100", "101"],
-            ["95", "101"],
-            ["100", "103"],
-            ["95", "103"]]
+            [["5", "6"], ["6", "7"], ["3", "3"], ["4", "6"], ["4", "11"], ["6", "8"], ["4", "18"], ["11", "18"], ["12", "18"], ["20", "24"], ["3", "24"], ["17", "24"], ["28", "38"], ["14", "38"], ["17", "38"], ["18", "47"], ["20", "47"], ["8", "11"], ["38", "29"], ["18", "29"], ["20", "29"], ["11", "46"], ["5", "8"], ["7", "38"], ["46", "39"], ["7", "47"], ["46", "48"], ["48", "49"], ["46", "49"], ["7", "49"], ["14", "42"], ["49", "53"], ["11", "53"], ["7", "57"], ["20", "57"], ["7", "58"], ["20", "58"], ["4", "58"], ["71", "72"], ["66", "71"], ["66", "72"], ["70", "71"], ["70", "72"], ["74", "76"], ["67", "74"], ["24", "81"], ["83", "76"], ["66", "95"], ["66", "100"], ["70", "83"], ["66", "95"], ["83", "95"], ["48", "84"], ["48", "83"], ["24", "90"], ["67", "90"], ["29", "90"], ["60", "88"], ["60", "92"], ["76", "88"], ["76", "92"], ["95", "100"], ["100", "101"], ["95", "101"], ["100", "103"], ["95", "103"]]
 
         var data2 = {
-            "nodes": [
-                // { "name": "node1", "group": 1 },
-                // { "name": "node2", "group": 2 },
-                // { "name": "node3", "group": 2 },
-                // { "name": "node4", "group": 3 }
-            ],
-            "links": [
-                // { "source": 2, "target": 1, "weight": 1 },
-                // { "source": 0, "target": 2, "weight": 3 }
-            ],
+            "nodes": [],
+            "links": [],
         }
 
         //extract nodes
         var list_node = [];
-
 
         data.forEach(element => {
             if (list_node.indexOf(element[0]) < 0) {
@@ -278,10 +204,10 @@
         g.subgraphs.forEach(element => {
             var tmp = []
             element.forEach(vertex => {
-                if(tmp.indexOf(list_node[vertex.u]) == -1){
+                if (tmp.indexOf(list_node[vertex.u]) == -1) {
                     tmp.push(list_node[vertex.u])
                 }
-                if(tmp.indexOf(list_node[vertex.v]) == -1){
+                if (tmp.indexOf(list_node[vertex.v]) == -1) {
                     tmp.push(list_node[vertex.v])
                 }
             })
@@ -297,36 +223,48 @@
             .attr("width", width)
             .attr("height", height);
 
-        var force = d3.layout.force()
-            .gravity(.05)
-            .distance(100)
-            .charge(-100)
-            .size([width, height]);
 
-        force
-            .nodes(data2.nodes)
-            .links(data2.links)
-            .start();
 
-        svg.append("svg:defs")
-            .append("svg:marker")    // This section adds in the arrows
-            .attr("id", "arrowhead")
-            .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 25)
-            .attr("refY", 0)
-            .attr('orient', 'auto')
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
-            .attr("orient", "auto")
-            .append("svg:path")
-            .attr("d", "M0,-5L10,0L0,5");
+
+
+        // var force = d3.layout.force()
+        //     .gravity(.05)
+        //     // .distance(100)
+        //     .charge(-100)
+        //     .size([width, height]);
+
+        // force
+        //     .nodes(data2.nodes)
+        //     .links(data2.links)
+        //     .start();
+
+
+        //set up the simulation and add forces
+        var simulation = d3.forceSimulation()
+            .nodes(data2['nodes']);
+
+        var link_force = d3.forceLink(data2['links'])
+            .id(function (d) { return d.name; });
+
+        var charge_force = d3.forceManyBody()
+            .strength(-100);
+
+        var center_force = d3.forceCenter(width / 2, height / 2);
+
+        simulation
+            .force("charge_force", charge_force)
+            .force("center_force", center_force)
+            .force("links", link_force)
+
+        simulation.on("tick", tickActions);
+
+
 
         var link = svg.selectAll(".link")
             .data(data2.links)
             .enter().append("line")
             .attr("class", "link")
-            .style("stroke-width", function (d) { return Math.sqrt(d.weight); })
-        // .attr("marker-end", "url(#arrowhead)"); //show arrows
+            .style("stroke-width", 1 )
 
         var node = svg.selectAll(".node")
             .data(data2.nodes)
@@ -336,21 +274,30 @@
 
 
         node.append("circle")
-            .attr("r", "5");
+            .attr("r", "10");
 
         node.append("text")
             .attr("dx", 12)
             .attr("dy", ".35em")
             .text(function (d) { return d.name });
 
-        force.on("tick", function () {
+        // force.on("tick", function () {
+        //     link.attr("x1", function (d) { return d.source.x; })
+        //         .attr("y1", function (d) { return d.source.y; })
+        //         .attr("x2", function (d) { return d.target.x; })
+        //         .attr("y2", function (d) { return d.target.y; });
+
+        //     node.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+        // });
+
+        function tickActions() {
             link.attr("x1", function (d) { return d.source.x; })
                 .attr("y1", function (d) { return d.source.y; })
                 .attr("x2", function (d) { return d.target.x; })
                 .attr("y2", function (d) { return d.target.y; });
 
             node.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
-        });
+        }
     </script>
 </body>
 
