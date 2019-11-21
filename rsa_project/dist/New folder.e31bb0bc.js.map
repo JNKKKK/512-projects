@@ -1,1 +1,0 @@
-{"version":3,"sources":["rsa.js","index.js"],"names":["a","console","log"],"mappings":";;ACAA;;;;AAEAC,ADFAD,CAAC,GAAC,EAAF,CCEO,CAACE,GAAR,CAAYF,YAAZ;eDAeA","file":"New folder.e31bb0bc.js","sourceRoot":"..","sourcesContent":["a={}\r\n\r\nexport default a","import a from \"./rsa\"\r\n\r\nconsole.log(a)"]}
