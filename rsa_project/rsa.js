@@ -1,0 +1,3 @@
+a={}
+
+export default a
