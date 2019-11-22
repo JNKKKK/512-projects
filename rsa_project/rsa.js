@@ -40,8 +40,8 @@ class RSA {
 
     encrypt(m) {
         function str2bigInt(s) {
-            var hexString = "";
-            for (var i = 0; i < s.length; i++) {
+            let hexString = "";
+            for (let i = 0; i < s.length; i++) {
                 hexString += ("0" + s.charCodeAt(i).toString(16)).slice(-2);
             }
             return new bigInt(hexString, 16);
@@ -50,10 +50,17 @@ class RSA {
     }
 
     decrypt(c) {
-        function bigInt2str() {
-            
+        function bigInt2str(int) {
+            let bytes = []
+            let s = int.toString(16)
+            for (let i = 0; i < s.length; i++) {
+                if (i % 2 == 0)
+                    bytes.push(s[i] + s[i + 1])
+            }
+            bytes = bytes.map((b) => String.fromCharCode(parseInt(b, 16))).join('')
+            return bytes
         }
-        return bigInt(c).modPow(this.d, this.n);
+        return bigInt2str(bigInt(c).modPow(this.d, this.n))
     };
 }
 
