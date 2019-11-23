@@ -9,6 +9,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "animejs": "^3.1.0",
     "big-integer": "^1.6.48"
+  },
+  "devDependencies": {
+    "sass": "^1.23.7"
   }
 }

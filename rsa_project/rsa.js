@@ -1,14 +1,14 @@
-var bigInt = require("big-integer");
+import bigInt from "big-integer"
 
 class RSA {
-    constructor() {
+    constructor () {
 
     }
 
-    generate(keysize) {
+    generate (keysize) {
         // Generates a random k-bit prime greater than √2 × 2^(k-1)       
         // returns a random generated prime
-        function randomPrime(bits) {
+        function randomPrime (bits) {
             const min = bigInt(6074001000).shiftLeft(bits - 33);  // min ≈ √2 × 2^(bits - 1)
             const max = bigInt.one.shiftLeft(bits).minus(1);  // max = 2^(bits) - 1
             for (; ;) {
@@ -33,13 +33,16 @@ class RSA {
         } while (bigInt.gcd(e, lambda).notEquals(1) || p.minus(q).abs().shiftRight(
             keysize / 2 - 100).isZero());
 
+        this.lambda = lambda
+        this.p = p
+        this.q = q
         this.n = p.multiply(q)
         this.e = e
         this.d = e.modInv(lambda)
     }
 
-    encrypt(m) {
-        function str2bigInt(s) {
+    encrypt (m) {
+        function str2bigInt (s) {
             let hexString = "";
             for (let i = 0; i < s.length; i++) {
                 hexString += ("0" + s.charCodeAt(i).toString(16)).slice(-2);
@@ -49,8 +52,8 @@ class RSA {
         return str2bigInt(m).modPow(this.e, this.n);
     }
 
-    decrypt(c) {
-        function bigInt2str(int) {
+    decrypt (c) {
+        function bigInt2str (int) {
             let bytes = []
             let s = int.toString(16)
             for (let i = 0; i < s.length; i++) {
@@ -61,7 +64,7 @@ class RSA {
             return bytes
         }
         return bigInt2str(bigInt(c).modPow(this.d, this.n))
-    };
+    }
 }
 
 export default RSA
