@@ -26,7 +26,5 @@ class Caesar {
     }
 
 }
-let c = new Caesar(5);
-let b1 = c.encrypt("ertyui")
-console.log(b1)
-console.log(c.decrypt(b1))
+
+export default Caesar
