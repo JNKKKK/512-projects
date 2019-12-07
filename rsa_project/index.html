@@ -107,6 +107,31 @@
             </div>
         </div>
     </div>
+    <!-- --------------------------------------------- -->
+    <!-- Excryption -->
+    <!-- --------------------------------------------- -->
+    <div id="excryption-container">
+        <div id="div-3-0">
+            <div class="alice">
+                <i class="fa fa-user"></i>
+                <div class="name-label">Alice</div>
+                <div class="key public">Alice's Public Key</div>
+                <div class="key private">Alice's Private Key</div>
+            </div>
+            <div class="right">
+                <div>Please type the message you want to encrypt</div>
+                <textarea id="encrypt-text" maxlength="50"></textarea>
+                <input id="encrypt-button" type="button" value="Encrypt">
+                <div class="formula">
+                    <i>c</i> ≡ <i>m</i><sup class="e-sup">e</sup> (mod <i>n</i>)
+                </div>
+                <div class="encrypted">
+                    Encrypted:
+                    <div id="encrypted-text">ddddd</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

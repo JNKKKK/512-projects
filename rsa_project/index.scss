@@ -277,3 +277,80 @@ body {
     }
   }
 }
+
+#div-3-0 {
+  width: 100%;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  .alice {
+    i {
+      font-size: 8rem;
+    }
+    .key {
+      font-size: 1.1rem;
+      padding:1rem;
+      border: 1px white solid;
+      margin-top: 1rem;
+      position: relative;
+    }
+  }
+  textarea {
+    width: 30rem;
+    height: 5rem;
+    margin-top: 1rem;
+    font-size: 2rem;
+    background-color: #252423;
+    border: white 3px solid;
+    color: white;
+    &:focus{
+      outline: none;
+      outline-width: 0;
+    }
+    &:active {
+      outline: none;
+      outline-width: 0;
+    }
+  }
+  input {
+    display: block;
+    width: 30rem;
+    margin: 1rem auto;
+    background-color: #252423;
+    border: white 3px solid;
+    color: white;
+    padding: 0.5rem 0;
+    &:focus{
+      outline: none;
+      outline-width: 0;
+    }
+    &:active {
+      outline: none;
+      outline-width: 0;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .formula {
+    font-size: 3rem;
+    margin-top: 1rem;
+    .e-sup {
+      display: inline-block;
+    }
+  }
+  .encrypted {
+    margin-top: 1rem;
+    width: 30rem;
+    overflow-wrap: break-word;
+    div {
+      padding: 1rem;
+      border: white 3px solid;
+      margin-top: 1rem;
+    }
+  }
+}

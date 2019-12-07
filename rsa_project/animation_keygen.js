@@ -1,6 +1,6 @@
 import anime from 'animejs/lib/anime.es.js'
 
-function keygen_timeline() {
+function keygen_timeline(r) {
     var keygen_tl = anime.timeline({})
     var tmp_interval
     keygen_tl
