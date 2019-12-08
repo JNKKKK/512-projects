@@ -30,6 +30,9 @@ body {
 .bgcolor-4 {
   background-color: #d13f7c;
 }
+.bgcolor-5 {
+  background-color: #d1c73f;
+}
 
 #menu {
   margin-top: 2rem;
@@ -40,7 +43,7 @@ body {
   .item {
     cursor: pointer;
     position: relative;
-    width: 25rem;
+    width: 39rem;
     height: 3rem;
     display: flex;
     flex-direction: row;
@@ -61,7 +64,7 @@ body {
       font-size: 1.4rem;
       color: #f6f4f2;
       border-radius: 1rem;
-      width: 16rem;
+      width: 35rem;
       text-align: center;
     }
   }
@@ -82,10 +85,14 @@ body {
   height: 5rem;
   text-align: center;
   font-size: 1.5rem;
-  background-color: navy;
+  background-color: rgb(48, 48, 105);
   border-radius: 1.5rem;
+  padding: 0.5rem 0.8rem;
   margin-right: 1rem;
   line-height: 4rem;
+  &:hover {
+    cursor:pointer;
+  }
 }
 
 #div-1-0 {
@@ -453,4 +460,153 @@ body {
   #decrypt-button {
     font-size: 1rem;
   }
+}
+
+#div-5-0 {
+  position: relative;
+  width: 25rem;
+  height: 3rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  .circle {
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+    font-size: 2rem;
+    border-radius: 1.5rem;
+    background-color: #d1c73f;
+    margin-right: 1rem;
+    line-height: 3rem;
+  }
+  .title {
+    padding: 0.3rem 0.7rem;
+    font-size: 1.8rem;
+    background-color: #d1c73f;
+    color: #f6f4f2;
+    border-radius: 1rem;
+  }
+}
+
+#div-5-1 {
+  position: relative;
+  width: 50rem;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 0;
+  color:#d1c73f;
+}
+
+#div-5-2 {
+  position: relative;
+  left: calc(50% - 40rem);
+  width: 80rem;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  .alice {
+    i {
+      font-size: 3rem;
+    }
+    font-size: 1rem;
+    .key {
+      font-size: 0.8rem;
+      padding:0.5rem;
+      border: 1px white solid;
+      margin-top: 1rem;
+      position: relative;
+    }
+    b {
+      color:#4e3fd1
+    }
+    .target-e b {
+      color:#d13f83
+    }
+  }
+  .bob {
+    i {
+      font-size: 3rem;
+    }
+    font-size: 1rem;
+    .key {
+      font-size: 0.8rem;
+      padding:0.5rem;
+      border: 1px white solid;
+      margin-top: 1rem;
+      position: relative;
+    }
+    b {
+      color:#d13f83
+    }
+    .target-e b {
+      color:#4e3fd1
+    }
+  }
+  .middle {
+    div {
+      margin-bottom: 1rem;
+    }
+  }
+  padding-bottom: 2rem;
+  border-bottom: white 3px solid;
+}
+#div-5-3 {
+  position: relative;
+  width: 50rem;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 0;
+  color:#d1c73f;
+}
+
+#div-5-4 {
+  position: relative;
+  left: calc(50% - 40rem);
+  width: 80rem;
+  font-size: 1.5rem;
+  text-align: center;
+  // margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  .alice {
+    i {
+      font-size: 3rem;
+    }
+    font-size: 1rem;
+    .key {
+      font-size: 0.8rem;
+      padding:0.5rem;
+      border: 1px white solid;
+      margin-top: 1rem;
+      position: relative;
+    }
+  }
+  .bob {
+    i {
+      font-size: 3rem;
+    }
+    font-size: 1rem;
+    .key {
+      font-size: 0.8rem;
+      padding:0.5rem;
+      border: 1px white solid;
+      margin-top: 1rem;
+      position: relative;
+    }
+  }
+  .middle {
+    div {
+      margin-bottom: 1rem;
+    }
+  }
+  // padding-bottom: 2rem;
+  // border-bottom: white 3px solid;
 }
