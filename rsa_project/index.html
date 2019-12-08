@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <div id="title-0"><span>RSA Cryptosystem Visualization</span></div>
+    <div id="title-0"><span>RSA Cryptosystem Visualization <a id="back-link">back</a></span></div>
     <div id="menu">
         <div class="item">
             <div class="circle bgcolor-1">1</div>
@@ -108,15 +108,17 @@
         </div>
     </div>
     <!-- --------------------------------------------- -->
-    <!-- Excryption -->
+    <!-- Encryption -->
     <!-- --------------------------------------------- -->
-    <div id="excryption-container">
+    <div id="encryption-container">
         <div id="div-3-0">
             <div class="alice">
                 <i class="fa fa-user"></i>
                 <div class="name-label">Alice</div>
                 <div class="key public">Alice's Public Key</div>
                 <div class="key private">Alice's Private Key</div>
+                <div class="key target">Bob's Public Key</div>
+
             </div>
             <div class="right">
                 <div>Please type the message you want to encrypt</div>
@@ -129,6 +131,32 @@
                     Encrypted:
                     <div id="encrypted-text">ddddd</div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- --------------------------------------------- -->
+    <!-- decryption -->
+    <!-- --------------------------------------------- -->
+    <div id="decryption-container">
+        <div id="div-4-0">
+            <div class="left">
+                <div>The cipertext is</div>
+                <div id="decrypt-text"> </div>
+                <input id="decrypt-button" type="button" value="decrypt">
+                <div class="formula">
+                    <i>c</i><sup class="d-sup">d</sup> ≡ <i>(</i><i>m</i><sup class="e-sup">e</sup><i>)</i><sup class="d-sup">d</sup> (mod <i>n</i>)
+                </div>
+                <div class="decrypted">
+                    Encrypted:
+                    <div id="decrypted-text">ddddd</div>
+                </div>
+            </div>
+            <div class="bob">
+                <i class="fa fa-user"></i>
+                <div class="name-label">Bob</div>
+                <div class="key public">Bob's Public Key</div>
+                <div class="key private">Bob's Private Key</div>
+                <div class="key public">Alice's Public Key</div>
             </div>
         </div>
     </div>

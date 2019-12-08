@@ -77,6 +77,17 @@ body {
   }
 }
 
+#back-link{
+  width: 5rem;
+  height: 5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  background-color: navy;
+  border-radius: 1.5rem;
+  margin-right: 1rem;
+  line-height: 4rem;
+}
+
 #div-1-0 {
   position: relative;
   width: 25rem;
@@ -352,5 +363,94 @@ body {
       border: white 3px solid;
       margin-top: 1rem;
     }
+  }
+}
+
+#div-4-0 {
+  width: 100%;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  .bob {
+    i {
+      font-size: 8rem;
+    }
+    .key {
+      font-size: 1.1rem;
+      padding:1rem;
+      border: 1px white solid;
+      margin-top: 1rem;
+      position: relative;
+    }
+  }
+  textarea {
+    width: 30rem;
+    height: 5rem;
+    margin-top: 1rem;
+    font-size: 2rem;
+    background-color: #252423;
+    border: white 3px solid;
+    color: white;
+    &:focus{
+      outline: none;
+      outline-width: 0;
+    }
+    &:active {
+      outline: none;
+      outline-width: 0;
+    }
+  }
+  input {
+    display: block;
+    width: 30rem;
+    margin: 1rem auto;
+    background-color: #252423;
+    border: white 3px solid;
+    color: white;
+    padding: 0.5rem 0;
+    &:focus{
+      outline: none;
+      outline-width: 0;
+    }
+    &:active {
+      outline: none;
+      outline-width: 0;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .formula {
+    font-size: 3rem;
+    margin-top: 1rem;
+    .e-sup {
+      display: inline-block;
+    }
+    .d-sup {
+      display: inline-block;
+    }
+  }
+  .decrypted {
+    margin: 1rem auto;
+    width: 30rem;
+    overflow-wrap: break-word;
+    div {
+      padding: 1rem;
+      border: white 3px solid;
+      margin-top: 1rem;
+    }
+  }
+  #decrypt-text {
+    border: white 3px solid;
+    padding:1rem;
+    word-wrap: break-word;
+    width: 28rem;
+  }
+  #decrypt-button {
+    font-size: 1rem;
   }
 }

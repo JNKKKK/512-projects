@@ -29,32 +29,32 @@ function encryption_timeline_1(r) {
             easing: 'easeOutExpo',
         }, '+=500')
         .add({
-            targets: ['#div-3-0 .alice .private', '#div-3-0 .right .formula .e-sup'],
+            targets: ['#div-3-0 .alice .target', '#div-3-0 .right .formula .e-sup'],
             color: '#F00',
             'border-color': '#F00',
             duration: 1000,
             easing: 'easeOutExpo',
         })
         .add({
-            targets: ['#div-3-0 .alice .private', '#div-3-0 .right .formula .e-sup'],
+            targets: ['#div-3-0 .alice .target', '#div-3-0 .right .formula .e-sup'],
             scale: 1.5,
              duration: 100,
             easing: 'easeInOutSine',
         })
         .add({
-            targets: ['#div-3-0 .alice .private', '#div-3-0 .right .formula .e-sup'],
+            targets: ['#div-3-0 .alice .target', '#div-3-0 .right .formula .e-sup'],
             scale: 1,
              duration: 100,
             easing: 'easeInOutSine',
         })
         .add({
-            targets: ['#div-3-0 .alice .private', '#div-3-0 .right .formula .e-sup'],
+            targets: ['#div-3-0 .alice .target', '#div-3-0 .right .formula .e-sup'],
             scale: 1.5,
              duration: 100,
             easing: 'easeInOutSine',
         })
         .add({
-            targets: ['#div-3-0 .alice .private', '#div-3-0 .right .formula .e-sup'],
+            targets: ['#div-3-0 .alice .target', '#div-3-0 .right .formula .e-sup'],
             scale: 1,
              duration: 100,
             easing: 'easeInOutSine',
