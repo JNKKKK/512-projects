@@ -69,7 +69,7 @@ function keygen_timeline(r) {
             left: ['calc(0 - 40rem)', 'calc(50% - 20rem'],
             duration: 1000,
             easing: 'easeOutExpo',
-            begin: () => document.getElementById('div-1-7').scrollIntoView()
+            // begin: () => document.getElementById('div-1-7').scrollIntoView()
         }, '+=500')
         .add({
             targets: '#div-1-8',
@@ -83,7 +83,7 @@ function keygen_timeline(r) {
             left: ['calc(0 - 40rem)', 'calc(50% - 20rem'],
             duration: 1000,
             easing: 'easeOutExpo',
-            begin: () => document.getElementById('div-1-9').scrollIntoView()
+            // begin: () => document.getElementById('div-1-9').scrollIntoView()
         }, '+=500')
         .add({
             targets: '#div-1-10',
@@ -97,7 +97,7 @@ function keygen_timeline(r) {
             opacity: [0, 1],
             duration: 1000,
             easing: 'easeOutExpo',
-            begin: () => document.getElementById('div-1-11').scrollIntoView()
+            // begin: () => document.getElementById('div-1-11').scrollIntoView()
         }, '+=500')
 
     keygen_tl.pause()

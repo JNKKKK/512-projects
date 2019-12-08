@@ -29,7 +29,7 @@ function vs_timeline(r) {
             'border-color': '#F00',
             duration: 1000,
             easing: 'easeOutExpo',
-        })
+        },'+=2000')
         // scale
         .add({
             targets: ['#div-5-2 .target-e','#div-5-2 .target-e'],
@@ -111,7 +111,7 @@ function vs_timeline(r) {
             'border-color': '#F00',
             duration: 1000,
             easing: 'easeOutExpo',
-        })
+        },'+=2000')
         // scale
         .add({
             targets: ['#div-5-4 .key','#div-5-4 .target-e'],
